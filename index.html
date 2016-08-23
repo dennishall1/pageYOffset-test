@@ -9,12 +9,12 @@
 
   <div style="height:99in; background:#eee; padding: 5em; font: 1em/1.5 arial">
     This is a very tall div, so that you can scroll.<br><br>
-    <div id="nonZeroScroll" style="display:none">
+    <div id="nonZeroScroll" style="display:none; position: fixed; top: 8em; left: 5em;">
       You've scrolled!<br>
       Now hit refresh to see if your browser remembers
-      immediately---or eventually---that you scrolled.<br><br>
-      <div id="timeToRemember"></div>
+      immediately---or eventually---that you scrolled.
     </div>
+    <div id="timeToRemember"></div>
   </div>
   
   <script>
@@ -35,11 +35,13 @@
         }
       });
     }
-    window.addEventListener('scroll', function onScroll(){
-      //timeToRemember.style.display = 'none';
-      nonZeroScroll.style.display = '';
-      window.removeEventListener('scroll', onScroll);
-    })
+    if(sessionStorage.step !== '1'){
+      window.addEventListener('scroll', function onScroll(){
+        sessionStorage.step = '1';
+        nonZeroScroll.style.display = '';
+        window.removeEventListener('scroll', onScroll);
+      });
+    }
   </script>
   
 </body>
