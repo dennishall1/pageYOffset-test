@@ -22,20 +22,21 @@
     var start = Date.now();
     var nonZeroScroll = document.getElementById('nonZeroScroll');
     var timeToRemember = document.getElementById('timeToRemember');
-    if(window.pageYOffset > 0){
-      //timeToRemember.style.display = '';
-      timeToRemember.innerHTML = 'Yay! Your browser knew from the start that it was restoring a scroll position!';
+    if(sessionStorage.step === '1'){
+      if(window.pageYOffset > 0){
+        //timeToRemember.style.display = '';
+        timeToRemember.innerHTML = 'Yay! Your browser knew from the start that it was restoring a scroll position!';
+      } else {
+        requestAnimationFrame(function tick() {
+          if (window.pageYOffset > 0) {
+            //timeToRemember.style.display = '';
+            timeToRemember.innerHTML = 'Boo! Your browser didn\'t realize that it was restoring a scroll position until after ' + (Date.now() - start) + ' milliseconds!';
+          } else {
+            requestAnimationFrame(tick);
+          }
+        });
+      }
     } else {
-      requestAnimationFrame(function tick() {
-        if (window.pageYOffset > 0) {
-          //timeToRemember.style.display = '';
-          timeToRemember.innerHTML = 'Boo! Your browser didn\'t realize that it was restoring a scroll position until after ' + (Date.now() - start) + ' milliseconds!';
-        } else {
-          requestAnimationFrame(tick);
-        }
-      });
-    }
-    if(sessionStorage.step !== '1'){
       window.addEventListener('scroll', function onScroll(){
         sessionStorage.step = '1';
         nonZeroScroll.style.display = '';
